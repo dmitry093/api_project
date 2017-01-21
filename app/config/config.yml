@@ -43,6 +43,7 @@ fos_rest:
         view_response_listener: 'force'
         mime_types:
                     json: ['application/json; charset=UTF-8', 'application/json']
+
     exception:
         enabled: true
         messages:

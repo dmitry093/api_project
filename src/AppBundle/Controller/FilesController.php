@@ -20,7 +20,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class FilesController extends Controller
 {
     /**
-     * @Rest\View(statusCode=200)
+     * @Rest\View(statusCode=200, template="response_api.html.twig")
      * @Rest\Get("/")
      * @ApiDoc(
      *     section="Others",
@@ -30,6 +30,7 @@ class FilesController extends Controller
      *         200="Returned when successful"
      *      }
      * )
+     * @return ApiResponse
      */
     public function indexAction()
     {
@@ -40,7 +41,7 @@ class FilesController extends Controller
     }
 
     /**
-     * @Rest\View(statusCode=200)
+     * @Rest\View(statusCode=200, template="response_api.html.twig")
      * @Rest\Get("/list")
      * @ApiDoc(
      *     section="Get some information",
@@ -51,6 +52,7 @@ class FilesController extends Controller
      *         404="Returned when the folder is not found"
      *      }
      * )
+     * @return ApiResponse
      */
     public function showlistAction()
     {
@@ -99,7 +101,7 @@ class FilesController extends Controller
     }
 
     /**
-     * @Rest\View(statusCode=200)
+     * @Rest\View(statusCode=200, template="response_api.html.twig")
      * @Rest\Get("file/{filename}/metadata")
      * @ApiDoc(
      *     section="Get some information",
@@ -112,7 +114,7 @@ class FilesController extends Controller
      *          }
      *     },
      *     output={
-     *     "class"="AppBundle\Entity\DataWrapper",
+     *     "class"="AppBundle\Entity\FileMetaData",
      *     "name"="parameters"
      *  },
      *     statusCodes={
@@ -120,6 +122,7 @@ class FilesController extends Controller
      *         404="Returned when the file with such name doesnt found on the server"
      *      }
      * )
+     * @return ApiResponse
      */
 
     public function showmetadataAction($filename)
@@ -142,8 +145,23 @@ class FilesController extends Controller
     }
 
     /**
-     * @Rest\View(statusCode=200)
+     * @Rest\View(statusCode=200, template="response_api.html.twig")
      * @Rest\Get("file/{filename}/download")
+     * @ApiDoc(
+     *     section="Download/Upload",
+     *     description="Use it to download some file",
+     *     requirements={
+     *          {
+     *              "name" = "filename",
+     *              "dataType" = "string",
+     *              "description" = "Filename on the server"
+     *          }
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when the file with such name doesnt found on the server"
+     *      }
+     * )
      */
 
     public function downloadAction($filename)
@@ -158,12 +176,31 @@ class FilesController extends Controller
     }
 
     /**
-     * @Rest\View(statusCode=201)
+     * @Rest\View(statusCode=201, template="response_api.html.twig")
      * @Rest\Post("upload")
      * @param ParamFetcher $paramFetcher
      * @FileParam(name="file", requirements={"maxSize"="2M"})
      * лимит размера файла - 2МБ
-     *
+     ** @ApiDoc(
+     *     section="Download/Upload",
+     *     description="Use it to upload some file",
+     *     requirements={
+     *          {
+     *              "name" = "file",
+     *              "dataType" = "File",
+     *              "description" = "Upload File"
+     *          }
+     *     },
+     *     output={
+     *          "class"="AppBundle\Entity\FileMetaData",
+     *          "name"="parameters"
+     *     },
+     *     statusCodes={
+     *         201="Returned when successful",
+     *         409="Returned when the server has more than maximum of files with similar names"
+     *      }
+     * )
+     * @return ApiResponse
      */
     public function uploadAction(ParamFetcher $paramFetcher)
     {
@@ -178,11 +215,11 @@ class FilesController extends Controller
         $i = 1;
         $name_to_save = $name;
 
-        while (file_exists($folder_path. DIRECTORY_SEPARATOR .$name_to_save) && $i < $max_same_names){
+        while (file_exists($folder_path. DIRECTORY_SEPARATOR .$name_to_save) && $i <= $max_same_names){
             $name_to_save = "(".$i.")".$name;
             $i = $i + 1;
         }
-        if ($i == $max_same_names)
+        if ($i >= $max_same_names)
             throw new ConflictHttpException("You can save only ". $max_same_names . " files with similar name");
 
         $file->Move($folder_path, $name_to_save);
@@ -200,13 +237,34 @@ class FilesController extends Controller
     }
 
     /**
-     * @Rest\View(statusCode=201)
+     * @Rest\View(statusCode=201, template="response_api.html.twig")
      * @Rest\Post("replace")
      * @param ParamFetcher $paramFetcher
-     * @QueryParam(name="replace_it", default = "S")
+     * @QueryParam(name="replace_it", default = "", description = "Filename on the server to replace")
      * @FileParam(name="file", requirements={"maxSize"="2M"})
      * лимит размера файла - 2МБ
      *
+     * @ApiDoc(
+     *     section="Download/Upload",
+     *     description="Use it to replace some file",
+     *     requirements={
+     *          {
+     *              "name" = "file",
+     *              "dataType" = "File",
+     *              "description" = "Upload File"
+     *          },
+     *
+     *     },
+     *     output={
+     *          "class"="AppBundle\Entity\FileMetaData",
+     *          "name"="parameters"
+     *     },
+     *     statusCodes={
+     *         201="Returned when successful",
+     *         409="Returned when the server has more than maximum of files with similar names"
+     *      }
+     * )
+     * @return ApiResponse
      */
     public function replaceAction(ParamFetcher $paramFetcher)
     {
