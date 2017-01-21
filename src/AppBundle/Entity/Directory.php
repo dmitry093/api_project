@@ -28,7 +28,7 @@ class Directory
      *
      * @return int
      */
-    public function getId()
+    private function getId()
     {
         return $this->id;
     }

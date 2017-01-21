@@ -18,7 +18,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
@@ -33,6 +33,19 @@ framework:
     assets: ~
     php_errors:
         log: true
+# FosRest
+fos_rest:
+    format_listener: true
+    routing_loader:
+        default_format: json
+    view:
+        view_response_listener: 'force'
+    exception:
+        enabled: true
+        codes:
+          'Symfony\Component\Routing\Exception\ResourceNotFoundException': HTTP_FORBIDDEN
+        messages:
+          'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
 
 # Twig Configuration
 twig:
