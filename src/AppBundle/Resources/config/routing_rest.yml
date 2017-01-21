@@ -1,0 +1,4 @@
+files :
+  type: rest
+  resource:     "AppBundle:Files"
+  name_prefix:  api

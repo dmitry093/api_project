@@ -36,14 +36,15 @@ framework:
 # FosRest
 fos_rest:
     format_listener: true
+    param_fetcher_listener: force
     routing_loader:
         default_format: json
     view:
         view_response_listener: 'force'
+        mime_types:
+                    json: ['application/json; charset=UTF-8', 'application/json']
     exception:
         enabled: true
-        codes:
-          'Symfony\Component\Routing\Exception\ResourceNotFoundException': HTTP_FORBIDDEN
         messages:
           'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
 

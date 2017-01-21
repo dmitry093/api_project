@@ -1,7 +1,7 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
-files:
-    resource: AppBundle\Controller\FilesController
-    type:     rest
-    prefix:   /api
+#app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
+rest :
+  type : rest
+  resource : "routing_rest.yml"
+  prefix : /api
