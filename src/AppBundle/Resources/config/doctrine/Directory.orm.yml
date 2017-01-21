@@ -1,0 +1,19 @@
+AppBundle\Entity\Directory:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\DirectoryRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        path:
+            type: string
+            length: '255'
+            unique: true
+        files:
+            type: array
+            nullable: true
+    lifecycleCallbacks: {  }

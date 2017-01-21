@@ -1,0 +1,5 @@
+app_files_list:
+    pattern:  /files
+    defaults: { _controller: AppBundle:Files:list, _format: ~ }
+    requirements:
+        _method: GET
