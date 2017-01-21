@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\FileParam;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 class FilesController extends Controller
 {
@@ -37,6 +38,7 @@ class FilesController extends Controller
             $files = scandir($folder);
             foreach ($files as $file) {
                 if (($file == '.') || ($file == '..')) continue;
+                $file =  mb_convert_encoding($file, "UTF-8", "auto"); // винда + кириллица в названии папок и файлов
                 $f0 = $folder . DIRECTORY_SEPARATOR . $file;
                 if (is_dir($f0)) {
                     $Directory = new Directory();
@@ -69,7 +71,7 @@ class FilesController extends Controller
         get_a_tree($folder_path . DIRECTORY_SEPARATOR, $arr_directories, 0, $folder_name);
 
         return  array("code" => "200", "response" => $arr_directories);
-
+        //print_r($arr_directories);
     }
 
     /**
@@ -121,10 +123,7 @@ class FilesController extends Controller
     {
         $file = $paramFetcher->get('file');
 
- /*       if (!$file->isValid)
-/            throw new ConflictHttpException("File upload failed");
-*/
-        $name = $file->getClientOriginalName();
+         $name = $file->getClientOriginalName();
 
         $folder_name = $this->container->getParameter('folder_with_files');
         $max_same_names = $this->container->getParameter('max_same_names');
@@ -148,12 +147,51 @@ class FilesController extends Controller
         $FileMetaData->setModified(date ("F d Y H:i:s.", filemtime($folder_path . DIRECTORY_SEPARATOR . $name_to_save)));
         $FileMetaData->setMimetype(mime_content_type($folder_path . DIRECTORY_SEPARATOR . $name_to_save));
 
-        return array("code" => "201", "message" => "File Saved", "response" => $FileMetaData);
+        return array("code" => "201", "response" => $FileMetaData);
 
 
     }
 
+    /**
+     * @Rest\View(statusCode=202)
+     * @Rest\Post("replace")
+     * @param ParamFetcher $paramFetcher
+     * @QueryParam(name="replace_it", default = "S")
+     * @FileParam(name="file", requirements={"maxSize"="2M"})
+     * лимит размера файла - 2МБ
+     *
+     */
+    public function replaceAction(ParamFetcher $paramFetcher)
+    {
+
+        $file = $paramFetcher->get('file');
+        $replace_it = $paramFetcher->get('replace_it');
+        $name = $file->getClientOriginalName();
 
 
+        $folder_name = $this->container->getParameter('folder_with_files');
+        $folder_path = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . $folder_name;
+
+
+        if (empty($replace_it))
+            $name_to_save = $name;
+        else {
+            if (!file_exists($folder_path . DIRECTORY_SEPARATOR .$replace_it))
+                throw new NotFoundHttpException('File ' . $folder_path . '/'. $replace_it. ' doesnt exists');
+            $name_to_save = $replace_it;
+        }
+
+        $file->Move($folder_path, $name_to_save);
+
+        $FileMetaData = new FileMetaData();
+        $FileMetaData->setFilename($name_to_save);
+        $FileMetaData->setBytes(filesize($folder_path . DIRECTORY_SEPARATOR . $name_to_save));
+        $FileMetaData->setModified(date ("F d Y H:i:s.", filemtime($folder_path . DIRECTORY_SEPARATOR . $name_to_save)));
+        $FileMetaData->setMimetype(mime_content_type($folder_path . DIRECTORY_SEPARATOR . $name_to_save));
+
+        return array("code" => "202", "response" => $FileMetaData);
+
+
+    }
 
 }
