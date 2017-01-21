@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use AppBundle\Entity\Directory;
 use AppBundle\Entity\FileMetaData;
+use AppBundle\Entity\ApiResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -13,22 +14,43 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations\FileParam;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 
 class FilesController extends Controller
 {
-
     /**
      * @Rest\View(statusCode=200)
      * @Rest\Get("/")
+     * @ApiDoc(
+     *     section="Others",
+     *     description="Use it to get a simple response from API",
+     *     output="AppBundle\Entity\ApiResponse",
+     *     statusCodes={
+     *         200="Returned when successful"
+     *      }
+     * )
      */
     public function indexAction()
     {
-        return array("code" => "200", "response" => "Hello! Seems to api works fine");
+        $response = new ApiResponse();
+        $response->setCode(200);
+        $response->setParameters("Hello! Seems to api is works fine");
+        return $response;
     }
 
     /**
      * @Rest\View(statusCode=200)
      * @Rest\Get("/list")
+     * @ApiDoc(
+     *     section="Get some information",
+     *     description="Use it to show a structure of  existing directories and files",
+     *     output="AppBundle\Entity\ApiResponse",
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when the folder is not found"
+     *      }
+     * )
      */
     public function showlistAction()
     {
@@ -70,13 +92,34 @@ class FilesController extends Controller
 
         get_a_tree($folder_path . DIRECTORY_SEPARATOR, $arr_directories, 0, $folder_name);
 
-        return  array("code" => "200", "response" => $arr_directories);
-        //print_r($arr_directories);
+        $response = new ApiResponse();
+        $response->setCode(200);
+        $response->setParameters($arr_directories);
+        return $response;
     }
 
     /**
      * @Rest\View(statusCode=200)
      * @Rest\Get("file/{filename}/metadata")
+     * @ApiDoc(
+     *     section="Get some information",
+     *     description="Use it to get metadata for some file",
+     *     requirements={
+     *          {
+     *              "name" = "filename",
+     *              "dataType" = "string",
+     *              "description" = "Filename on the server"
+     *          }
+     *     },
+     *     output={
+     *     "class"="AppBundle\Entity\DataWrapper",
+     *     "name"="parameters"
+     *  },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when the file with such name doesnt found on the server"
+     *      }
+     * )
      */
 
     public function showmetadataAction($filename)
@@ -92,7 +135,10 @@ class FilesController extends Controller
         $FileMetaData->setModified(date ("F d Y H:i:s.", filemtime($filepath)));
         $FileMetaData->setMimetype(mime_content_type($filepath));
 
-        return array("code" => "200", "response" => $FileMetaData);
+        $response = new ApiResponse();
+        $response->setCode(200);
+        $response->setParameters($FileMetaData);
+        return $response;
     }
 
     /**
@@ -147,13 +193,14 @@ class FilesController extends Controller
         $FileMetaData->setModified(date ("F d Y H:i:s.", filemtime($folder_path . DIRECTORY_SEPARATOR . $name_to_save)));
         $FileMetaData->setMimetype(mime_content_type($folder_path . DIRECTORY_SEPARATOR . $name_to_save));
 
-        return array("code" => "201", "response" => $FileMetaData);
-
-
+        $response = new ApiResponse();
+        $response->setCode(201);
+        $response->setParameters($FileMetaData);
+        return $response;
     }
 
     /**
-     * @Rest\View(statusCode=202)
+     * @Rest\View(statusCode=201)
      * @Rest\Post("replace")
      * @param ParamFetcher $paramFetcher
      * @QueryParam(name="replace_it", default = "S")
@@ -189,9 +236,12 @@ class FilesController extends Controller
         $FileMetaData->setModified(date ("F d Y H:i:s.", filemtime($folder_path . DIRECTORY_SEPARATOR . $name_to_save)));
         $FileMetaData->setMimetype(mime_content_type($folder_path . DIRECTORY_SEPARATOR . $name_to_save));
 
-        return array("code" => "202", "response" => $FileMetaData);
-
+        $response = new ApiResponse();
+        $response->setCode(201);
+        $response->setParameters($FileMetaData);
+        return $response;
 
     }
+
 
 }

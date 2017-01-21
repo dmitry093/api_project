@@ -2,3 +2,9 @@ files :
   type: rest
   resource:     "AppBundle:Files"
   name_prefix:  api
+
+pageNotFound:
+    path:  /{path}
+    defaults: {_controller: AppBundle:PageNotFound:pageNotFound, path: ''}
+    requirements:
+        path: .*
