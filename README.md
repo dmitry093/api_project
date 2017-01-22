@@ -15,15 +15,24 @@ Simple API for work with filesystem
 - Get file metadata;
 - Get list of files from the server;
 
-## Setup API
+## Installation and Setup
 
-- change target folder in <i> app\config\parameters.yml </i> by specifying
+- Clone this repository;
+- Install all dependencies using Composer;
+- Set target folder in <i> app\config\parameters.yml </i> by specifying
  the value of variable <b> folder_with_files </b>
  default value is "upload_files";
-- change maximum of files with similar names in folder 
+- Set maximum of files with similar names in folder 
   in <i> app\config\parameters.yml </i> by specifying the value
   of variable <b> max_same_names </b>
   default value is 2;
+  
+ <pre>
+     #  app\config\parameters.yml
+     ...
+     folder_with_files: uploaded_files
+     max_same_names: 2
+ </pre>
   
 
 ## Documentation
