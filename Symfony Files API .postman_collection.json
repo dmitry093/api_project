@@ -1,0 +1,798 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Symfony Files API ",
+		"_postman_id": "bd5b5dfa-0849-fd41-190d-7f075456cada",
+		"description": "Automated tests for API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/api/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned greeting\"] = \r",
+							"  responseBody.has(\"Hello\");\r",
+							"  \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 200\"] = jsonData.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Default greeting (JSON)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/.json",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned greeting\"] = \r",
+							"  responseBody.has(\"Hello\");\r",
+							"  \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 200\"] = jsonData.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/.json",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Json greeting"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/.xml",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is XML\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"text/xml\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned greeting\"] = \r",
+							"  responseBody.has(\"Hello\");\r",
+							"\r",
+							" \r",
+							"var responseJson = xml2Json(responseBody);\r",
+							"tests[\"code : 200\"] = responseJson.response.code == 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/.xml",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "XML greeting"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/.html",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is HTML\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"text/html\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned greeting\"] = \r",
+							"  responseBody.has(\"Hello\");\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/.html",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "HTML Greeting"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned some directory information\"] = \r",
+							"responseBody.has(\"directories\");\r",
+							"  \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 200\"] = jsonData.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/list",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Default list of directories (JSON)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/list.json",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned some directory information\"] = \r",
+							"responseBody.has(\"directories\");\r",
+							" \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 200\"] = jsonData.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/list.json",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "JSON list of directories"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/list.xml",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is XML\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"text/xml\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned some directory information\"] = \r",
+							"  responseBody.has(\"directories\");\r",
+							"  \r",
+							"var responseJson = xml2Json(responseBody);\r",
+							"tests[\"code : 200\"] = responseJson.response.code == 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/list.xml",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "XML list of directories"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/list.html",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is HTML\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"text/html\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned some directory information\"] = \r",
+							"  responseBody.has(\"directories\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/list.html",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "HTML list of directories"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/cat.jpg/metadata (200)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned metadata\"] = \r",
+							"  responseBody.has(\"metadata\");\r",
+							"  \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 200\"] = jsonData.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/cat.jpg/metadata",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Default metadata for cat.jpg (JSON)"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/cat.jpg/metadata.json",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned metadata\"] = \r",
+							"  responseBody.has(\"metadata\");\r",
+							"  \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 200\"] = jsonData.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/cat.jpg/metadata.json",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "JSON metadata for cat.jpg"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/cat.jpg/metadata.xml",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is XML\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"text/xml\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned metadata\"] = \r",
+							"  responseBody.has(\"metadata\");\r",
+							"  \r",
+							"var responseJson = xml2Json(responseBody);\r",
+							"tests[\"code : 200\"] = responseJson.response.code == 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/cat.jpg/metadata.xml",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "XML metadata for cat.jpg"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/cat.jpg/metadata.html",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is HTML\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"text/html\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned metadata\"] = \r",
+							"responseBody.has(\"metadata\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/cat.jpg/metadata.html",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "HTML metadata fro cat.jpg"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/cat.jpg/download (200)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is image/jpeg\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"image/jpeg\");\r",
+							"}\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/cat.jpg/download",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Download cat.jpg"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/catdog.jpg/metadata (404)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 404\"] = responseCode.code === 404;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 404\"] = jsonData.code === 404;\r",
+							"tests[\"message doesn't exists\"] =  responseBody.has(\"doesn't exists\");\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/catdog.jpg/metadata",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Metadata: File doesn't exists"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/file/catdog.jpg/download (404)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 404\"] = responseCode.code === 404;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 404\"] = jsonData.code === 404;\r",
+							"tests[\"message doesn't exists\"] =  responseBody.has(\"doesn't exists\");\r",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/file/catdog.jpg/download",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Download: File doesn't exists"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/upload (201)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 201\"] = jsonData.code === 201;\r",
+							"tests[\"Has correct returned metadata\"] = \r",
+							"  responseBody.has(\"metadata\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/upload",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"enabled": true,
+							"src": "dog.jpg"
+						}
+					]
+				},
+				"description": "Upload dog.jpg to the server"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/upload (400)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 400\"] = responseCode.code === 400;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 400\"] = jsonData.code === 400;\r",
+							"tests[\"Error file\"] = \r",
+							"  responseBody.has(\"This value should not be null\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/upload",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"enabled": false,
+							"src": "dog.jpg"
+						}
+					]
+				},
+				"description": "Send null FILE"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/upload (409)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 409\"] = responseCode.code === 409;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 409\"] = jsonData.code === 409;\r",
+							"tests[\"Error file\"] = \r",
+							"  responseBody.has(\"files with similar name\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/upload",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"enabled": true,
+							"src": "cavy.jpg"
+						}
+					]
+				},
+				"description": "Send one more file with same name to get an error"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/replace (201)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 201;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 201\"] = jsonData.code === 201;\r",
+							"tests[\"Has correct returned metadata\"] = \r",
+							"  responseBody.has(\"metadata\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/replace?replace_it=cavy.jpg",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"enabled": true,
+							"src": "489758622.jpg"
+						}
+					]
+				},
+				"description": "replace cavy.jpg by another picture"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/api/replace (400)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 400\"] = responseCode.code === 400;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 400\"] = jsonData.code === 400;\r",
+							"tests[\"Error file\"] = \r",
+							"  responseBody.has(\"This value should not be null\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/replace",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"enabled": false,
+							"src": "dog.jpg"
+						}
+					]
+				},
+				"description": "Send null FILE"
+			},
+			"response": []
+		},
+		{
+			"name": "Page not found request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 404\"] = responseCode.code === 404;\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							" \r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							" \r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"tests[\"Has correct returned Page not found in APi\"] = \r",
+							"  responseBody.has(\"Page not found in API\");\r",
+							"  \r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"code : 404\"] = jsonData.code === 404;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8000/api/dosomethingwrong",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

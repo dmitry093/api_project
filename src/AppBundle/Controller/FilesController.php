@@ -36,7 +36,7 @@ class FilesController extends Controller
     {
         $response = new ApiResponse();
         $response->setCode(200);
-        $response->setParameters("Hello! Seems to api is works fine");
+        $response->setParameters(array("greeting" => "Hello! Seems to API is works fine"));
         return $response;
     }
 
@@ -68,8 +68,9 @@ class FilesController extends Controller
                     $Directory = new Directory();
                     $Directory->setPath($previous_dir . DIRECTORY_SEPARATOR . $file);
                     $Directory->setFiles(array());
+                    $previous_dir = $previous_dir . DIRECTORY_SEPARATOR . $file;
                     array_push($arr_directories, $Directory);
-                    get_a_tree($f0, $arr_directories, $index_dir + 1, $arr_directories[$index_dir]->getPath());
+                    get_a_tree($f0, $arr_directories, $index_dir + 1, $previous_dir);
                 } else {
                     $curr_files = $arr_directories[$index_dir]->getFiles();
                     array_push($curr_files, $file);
@@ -82,7 +83,7 @@ class FilesController extends Controller
         $folder_path = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . $folder_name;
 
         if (!file_exists($folder_path))
-            throw new NotFoundHttpException('Folder named ' . $folder_name . ' doesnt exists');
+            throw new NotFoundHttpException('Folder named ' . $folder_name . " doesn't exists");
 
         $arr_directories = array();
 
@@ -96,7 +97,7 @@ class FilesController extends Controller
 
         $response = new ApiResponse();
         $response->setCode(200);
-        $response->setParameters($arr_directories);
+        $response->setParameters(array("directories" => array("directory" => $arr_directories)));
         return $response;
     }
 
@@ -119,9 +120,10 @@ class FilesController extends Controller
      *  },
      *     statusCodes={
      *         200="Returned when successful",
-     *         404="Returned when the file with such name doesnt found on the server"
+     *         404="Returned when the file with such name doesn't found on the server"
      *      }
      * )
+     * @param $filename
      * @return ApiResponse
      */
 
@@ -130,7 +132,7 @@ class FilesController extends Controller
         $folder_name = $this->container->getParameter('folder_with_files');
         $filepath = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $filename;
         if (!file_exists($filepath))
-            throw new NotFoundHttpException('File ' . $folder_name . '/'. $filename. ' doesnt exists');
+            throw new NotFoundHttpException('File ' . $folder_name . '/'. $filename. " doesn't exists");
 
         $FileMetaData = new FileMetaData();
         $FileMetaData->setFilename($filename);
@@ -140,7 +142,7 @@ class FilesController extends Controller
 
         $response = new ApiResponse();
         $response->setCode(200);
-        $response->setParameters($FileMetaData);
+        $response->setParameters(array("metadata" => $FileMetaData));
         return $response;
     }
 
@@ -158,10 +160,12 @@ class FilesController extends Controller
      *          }
      *     },
      *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when the file with such name doesnt found on the server"
+     *         200="Returned when successful",     *
+     *         404="Returned when the file with such name doesn't found on the server"
      *      }
      * )
+     * @param $filename
+     * @return BinaryFileResponse
      */
 
     public function downloadAction($filename)
@@ -169,7 +173,7 @@ class FilesController extends Controller
         $folder_name = $this->container->getParameter('folder_with_files');
         $filepath = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . $folder_name . DIRECTORY_SEPARATOR . $filename;
         if (!file_exists($filepath))
-            throw new NotFoundHttpException('File ' . $folder_name . '/'. $filename. ' doesnt exists');
+            throw new NotFoundHttpException('File ' . $folder_name . '/'. $filename. " doesn't exists");
         $response = new BinaryFileResponse($filepath);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
         return $response;
@@ -187,7 +191,7 @@ class FilesController extends Controller
      *     requirements={
      *          {
      *              "name" = "file",
-     *              "dataType" = "File",
+     *              "dataType" = "UploadFile",
      *              "description" = "Upload File"
      *          }
      *     },
@@ -197,6 +201,7 @@ class FilesController extends Controller
      *     },
      *     statusCodes={
      *         201="Returned when successful",
+     *         400="Returned when file variable is null",
      *         409="Returned when the server has more than maximum of files with similar names"
      *      }
      * )
@@ -212,15 +217,15 @@ class FilesController extends Controller
         $max_same_names = $this->container->getParameter('max_same_names');
         $folder_path = $this->get('kernel')->getRootDir() . DIRECTORY_SEPARATOR . $folder_name;
 
-        $i = 1;
+        $i = 0;
         $name_to_save = $name;
 
-        while (file_exists($folder_path. DIRECTORY_SEPARATOR .$name_to_save) && $i <= $max_same_names){
-            $name_to_save = "(".$i.")".$name;
+        while (file_exists($folder_path. DIRECTORY_SEPARATOR .$name_to_save) && $i < $max_same_names){
             $i = $i + 1;
+            $name_to_save = "(".$i.")".$name;
         }
-        if ($i >= $max_same_names)
-            throw new ConflictHttpException("You can save only ". $max_same_names . " files with similar name");
+        if ($i == $max_same_names)
+                throw new ConflictHttpException("You can save only ". $max_same_names . " files with similar name");
 
         $file->Move($folder_path, $name_to_save);
 
@@ -232,7 +237,7 @@ class FilesController extends Controller
 
         $response = new ApiResponse();
         $response->setCode(201);
-        $response->setParameters($FileMetaData);
+        $response->setParameters(array("metadata" => $FileMetaData));
         return $response;
     }
 
@@ -250,7 +255,7 @@ class FilesController extends Controller
      *     requirements={
      *          {
      *              "name" = "file",
-     *              "dataType" = "File",
+     *              "dataType" = "UploadFile",
      *              "description" = "Upload File"
      *          },
      *
@@ -261,6 +266,7 @@ class FilesController extends Controller
      *     },
      *     statusCodes={
      *         201="Returned when successful",
+     *         400="Returned when file variable is null",
      *         409="Returned when the server has more than maximum of files with similar names"
      *      }
      * )
@@ -282,7 +288,7 @@ class FilesController extends Controller
             $name_to_save = $name;
         else {
             if (!file_exists($folder_path . DIRECTORY_SEPARATOR .$replace_it))
-                throw new NotFoundHttpException('File ' . $folder_path . '/'. $replace_it. ' doesnt exists');
+                throw new NotFoundHttpException('File ' . $folder_path . '/'. $replace_it. " doesn't exists");
             $name_to_save = $replace_it;
         }
 
@@ -296,7 +302,7 @@ class FilesController extends Controller
 
         $response = new ApiResponse();
         $response->setCode(201);
-        $response->setParameters($FileMetaData);
+        $response->setParameters(array("metadata" => $FileMetaData));
         return $response;
 
     }

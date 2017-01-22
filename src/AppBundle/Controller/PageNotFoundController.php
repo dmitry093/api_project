@@ -10,7 +10,7 @@ class PageNotFoundController extends Controller
 
     public function pageNotFoundAction()
     {
-        throw new NotFoundHttpException('Page not found');
+        throw new NotFoundHttpException('Page not found in API');
     }
 
 }

@@ -8,11 +8,6 @@ namespace AppBundle\Entity;
 class Directory
 {
     /**
-     * @var int
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $path;
@@ -22,16 +17,6 @@ class Directory
      */
     private $files;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    private function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set path
