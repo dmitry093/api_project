@@ -32,7 +32,7 @@ For more information go to <b> /doc </b>
 Requirement for _format: <b> json | xml | html </b> <br>
 
 Requests:
-- <pre> [GET] /api/.{_format} </pre> returns simple API response
+- <pre> [GET] /api/.{_format} </pre> returns simple API response <br>
   available status codes: 200 (success) <br> <br>
   <b> Response sample: </b>
   <pre>
@@ -44,7 +44,7 @@ Requests:
         }
   <pre>
   
-- <pre> [GET] /api/list.{_format} </pre> returns list of directories and files
+- <pre> [GET] /api/list.{_format} </pre> returns list of directories and files <br>
   available status codes: 200 (success), 404 (folder not found) <br> <br>
   <b> Response sample: </b>
   <pre>
@@ -68,7 +68,7 @@ Requests:
         }
   </pre>
   
-- <pre> [GET] /api/file/{filename}/metadata.{_format} </pre> returns metadata for filename
+- <pre> [GET] /api/file/{filename}/metadata.{_format} </pre> returns metadata for filename <br>
     available status codes: 200 (success), 404 (file doesn't exists) <br>
     requires: filename of type string  <br> <br>
     <b> Response sample: </b>
@@ -85,11 +85,11 @@ Requests:
               }
             }
     </pre>
-- <pre> [GET] /api/file/{filename}/download.{_format} </pre> returns attachment
+- <pre> [GET] /api/file/{filename}/download.{_format} </pre> returns attachment <br>
     available status codes: 200 (success), 404 (file doesn't exists) <br>
     requires: filename of type string  <br> <br>
 
-- <pre> [POST] /api/upload.{_format} </pre> upload file and returns metadata
+- <pre> [POST] /api/upload.{_format} </pre> upload file and returns metadata <br>
     available status codes: 201 (success), 400 (no file attached), 409 (the server has more than maximum of files with similar names)  <br>
     requires: attachment file  <br> <br>
     <b> Response sample: </b>
@@ -123,6 +123,7 @@ Requests:
               }
             }
     </pre>
+    
 ## Testing
 For testing this API you can:
 - import the file named "Symfony Files API.postman_collection.json"
